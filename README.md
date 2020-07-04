@@ -8,4 +8,6 @@
 >Mybatis（最少配置方案）
 >
 >Sping Shiro权限控制
+>
+>统一的异常处理
 
