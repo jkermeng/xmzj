@@ -13,4 +13,4 @@
 
 ## 图片展示
 
-![https://github.com/jkermeng/xmzj/blob/master/projectImgs/login.png?raw=true]
+![登录]（https://github.com/jkermeng/xmzj/blob/master/projectImgs/login.png?raw=true）
