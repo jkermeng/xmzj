@@ -10,6 +10,8 @@
 >Sping Shiro权限控制
 >
 >统一的异常处理
+>
+>[接口文档](https://www.showdoc.cc/865490711161933 "Editor.md")
 
 ## 图片展示
 
