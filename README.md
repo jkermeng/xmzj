@@ -14,3 +14,7 @@
 ## 图片展示
 
 ![登录](https://github.com/jkermeng/xmzj/blob/master/projectImgs/login.png?raw=true)
+
+![注册](https://github.com/jkermeng/xmzj/blob/master/projectImgs/regist.png?raw=true)
+
+![展示页](https://github.com/jkermeng/xmzj/blob/master/projectImgs/index.png?raw=true)
