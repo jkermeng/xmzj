@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>指导信息</title>
+    #parse("sys/header.html")
+</head>
+<body>
+<div id="rrapp" v-cloak>
+    <div v-show="showList">
+        <div class="grid-btn">
+            <div class="form-group col-sm-2">
+                <select class="form-control"   v-model="q.project">
+                    <option v-for="l in projects" :value="l.id">{{l.name}}</option>
+                </select>
+            </div>
+            <a class="btn btn-default" @click="query">查询</a>
+            <a class="btn btn-primary" @click="del"><i class="fa fa-trash-o"></i>&nbsp;删除</a>
+            <a class="btn btn-primary" @click="info"><i class="fa fa-info"></i>&nbsp;详情</a>
+        </div>
+        <table id="jqGrid"></table>
+        <div id="jqGridPager"></div>
+    </div>
+
+    <div v-show="!showList" class="panel panel-success">
+        <div class="panel-heading">{{title}}</div>
+        <form class="form-horizontal">
+            <div class="form-group">
+                <div class="col-sm-2 control-label">项目</div>
+                <div class="col-sm-10">
+                    <select class="form-control" :disabled="showInfo" v-model="comment.project">
+                        <option v-for="l in projects" :value="l.id">{{l.name}}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group" v-if="comment.user" >
+                <div class="col-sm-2 control-label">所属用户</div>
+                <div class="col-sm-10">
+                    <select class="form-control" :disabled="showInfo" v-model="comment.user">
+                        <option v-for="l in users" :value="l.userId">{{l.username}}</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group" v-else>
+                <div class="col-sm-2 control-label">所属专家</div>
+                <div class="col-sm-10">
+                    <select class="form-control" :disabled="showInfo" v-model="comment.pro">
+                        <option v-for="l in users" :value="l.userId">{{l.username}}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-2 control-label">内容</div>
+                <div class="col-sm-10">
+                    <textarea class="form-control" :disabled="showInfo" v-model="comment.content" placeholder="内容"
+                              cols="30" rows="5"></textarea>
+                </div>
+            </div>
+
+            <div class="form-group" v-if="showInfo">
+                <div class="col-sm-2 control-label">添加时间</div>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" :disabled="showInfo" v-model="comment.gmttime"
+                           placeholder="添加时间"/>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-2 control-label"></div>
+                <input type="button" class="btn btn-primary" @click="saveOrUpdate" value="确定" v-if="!showInfo"/>
+                &nbsp;&nbsp;<input type="button" class="btn btn-default" @click="reload" value="返回"/>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="${rc.contextPath}/js/admin/comment.js?_${date.systemTime}"></script>
+</body>
+</html>

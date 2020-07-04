@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.learn.dao.TestDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.learn.entity.TestEntity" id="testMap">
+        <result property="id" column="id"/>
+        <result property="img" column="img"/>
+        <result property="sex" column="sex"/>
+        <result property="type" column="type"/>
+        <result property="content" column="content"/>
+        <result property="gmttime" column="gmtTime"/>
+        <result property="price" column="price"/>
+    </resultMap>
+
+	<select id="queryObject" resultType="com.learn.entity.TestEntity">
+		select * from test where id = #{value}
+	</select>
+
+	<select id="queryList" resultType="com.learn.entity.TestEntity">
+		select * from test where 1=1
+		<if test="img != null and img != ''">
+			and img like '%${img}%'
+		</if>
+
+																																					
+
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from test  where 1=1
+        <if test="img != null and img != ''">
+            and img like '%${img}%'
+        </if>
+																																						</select>
+	 
+	<insert id="save" parameterType="com.learn.entity.TestEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into test
+		(
+			`img`, 
+			`sex`, 
+			`type`, 
+			`content`, 
+			`gmtTime`, 
+			`price`
+		)
+		values
+		(
+			#{img}, 
+			#{sex}, 
+			#{type}, 
+			#{content}, 
+			#{gmttime}, 
+			#{price}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.learn.entity.TestEntity">
+		update test 
+		<set>
+			<if test="img != null">`img` = #{img}, </if>
+			<if test="sex != null">`sex` = #{sex}, </if>
+			<if test="type != null">`type` = #{type}, </if>
+			<if test="content != null">`content` = #{content}, </if>
+			<if test="gmttime != null">`gmtTime` = #{gmttime}, </if>
+			<if test="price != null">`price` = #{price}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from test where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from test where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

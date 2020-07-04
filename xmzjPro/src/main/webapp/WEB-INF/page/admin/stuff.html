@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>材料列表</title>
+	#parse("sys/header.html")
+</head>
+
+<body>
+	<div id="rrapp" v-cloak>
+		<div v-show="showList">
+			<div class="grid-btn">
+				<div class="form-group col-sm-2">
+					<input type="text" class="form-control" v-model="search" @keyup.enter="query" placeholder="关键词">
+				</div>
+				<a class="btn btn-default" @click="query">查询</a>
+				#if($shiro.hasPermission("sys:user:save"))
+				<a class="btn btn-primary" @click="add"><i class="fa fa-plus"></i>&nbsp;新增</a>
+				#end
+				#if($shiro.hasPermission("sys:user:update"))
+				<a class="btn btn-primary" @click="update"><i class="fa fa-info"></i>&nbsp;详情</a>
+				#end
+				#if($shiro.hasPermission("sys:user:delete"))
+				<a class="btn btn-primary" @click="del"><i class="fa fa-trash-o"></i>&nbsp;删除</a>
+				#end
+			</div>
+			<table id="jqGrid"></table>
+			<div id="jqGridPager"></div>
+		</div>
+
+		<div v-show="!showList" class="panel panel-success">
+			<div class="panel-heading">{{title}}</div>
+			<form class="form-horizontal">
+				<div class="form-group">
+					<div class="col-sm-2 control-label">材料名</div>
+					<div class="col-sm-10">
+						<input type="text" :disabled="showInfo" class="form-control" v-model="form.s_name" placeholder="材料名" />
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-2 control-label">用途</div>
+					<div class="col-sm-10">
+						<input type="text" :disabled="showInfo" class="form-control" v-model="form.s_where" placeholder="用途" />
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-2 control-label">用法</div>
+					<div class="col-sm-10">
+						<input type="text" :disabled="showInfo" class="form-control" v-model="form.s_how" placeholder="用法" />
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-2 control-label">好处</div>
+					<div class="col-sm-10">
+						<input type="text" :disabled="showInfo" class="form-control" v-model="form.s_good" placeholder="好处" />
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-2 control-label">坏处</div>
+					<div class="col-sm-10">
+						<input type="text" :disabled="showInfo" class="form-control" v-model="form.s_bad" placeholder="坏处" />
+					</div>
+				</div>
+
+				<div class="form-group">
+					<div class="col-sm-2 control-label"></div>
+					<input type="button" v-if='!showInfo' class="btn btn-primary" @click="saveOrUpdate" value="确定" />
+					&nbsp;&nbsp;<input type="button" class="btn btn-default" @click="reload" value="返回" />
+				</div>
+			</form>
+		</div>
+	</div>
+
+	<script src="${rc.contextPath}/js/admin/stuff.js?_${date.systemTime}"></script>
+</body>
+
+</html>

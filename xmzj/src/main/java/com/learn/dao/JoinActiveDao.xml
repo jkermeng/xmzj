@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.learn.dao.JoinActiveDao">
+    <resultMap id="stf" type="com.learn.entity.JoinActive">
+        <id property="ja_id" column="ja_id"></id>
+        <result property="uid" column="uid"></result>
+        <result property="a_id" column="a_id"></result>
+        <result property="joinDate" column="joinDate"></result>
+    </resultMap>
+    <select id="queryObject" resultMap="stf">
+        select *
+        from joinactive
+        where ja_id = #{value}
+    </select>
+    <select id="queryList" resultMap="stf">
+        select * from joinactive where 1=1
+        <if test="ja_id != null and ja_id != ''">
+            and ja_id = #{ja_id}
+        </if>
+        <if test="uid != null and uid != ''">
+            and uid = #{uid}
+        </if>
+        <if test="a_id != null and a_id != ''">
+            and a_id = #{a_id}
+        </if>
+        <if test="joinDate != null and joinDate != ''">
+            and joinDate = #{joinDate}
+        </if>
+
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+            <otherwise>
+                order by ja_id desc
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+
+    <select id="queryTotal" resultType="int">
+        select count(*) from joinactive where 1=1
+        <if test="ja_id != null and ja_id != ''">
+            and ja_id = #{ja_id}
+        </if>
+        <if test="uid != null and uid != ''">
+            and uid = #{uid}
+        </if>
+        <if test="a_id != null and a_id != ''">
+            and a_id = #{a_id}
+        </if>
+        <if test="joinDate != null and joinDate != ''">
+            and joinDate = #{joinDate}
+        </if>
+
+
+    </select>
+
+    <insert id="save" parameterType="com.learn.entity.JoinActive" useGeneratedKeys="true" keyProperty="ja_id">
+        insert into joinactive
+        (`uid`,
+         `a_id`,
+         `joinDate`
+        )
+        values (#{uid},
+                #{a_id},
+                #{joinDate}
+               )
+    </insert>
+    <update id="update" parameterType="com.learn.entity.JoinActive">
+        update joinactive
+        <set>
+            ja_id = #{ja_id}
+            <if test="uid != null and uid != ''">
+                and uid = #{uid}
+            </if>
+            <if test="a_id != null and a_id != ''">
+                and a_id = #{a_id}
+            </if>
+            <if test="joinDate != null and joinDate != ''">
+                and joinDate = #{joinDate}
+            </if>
+
+        </set>
+        where ja_id = #{ja_id}
+    </update>
+
+    <delete id="delete">
+        delete
+        from joinactive
+        where ja_id = #{value}
+    </delete>
+
+    <delete id="deleteBatch">
+        delete from joinactive where ja_id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

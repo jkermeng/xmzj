@@ -1,0 +1,328 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.learn.dao.U_DetailsDao">
+    <resultMap id="stf" type="com.learn.entity.U_Details">
+        <id property="ud_id" column="ud_id"></id>
+        <result property="ud_rname" column="ud_rname"></result>
+        <result property="ud_sex" column="ud_sex"></result>
+        <result property="ud_phone" column="ud_phone"></result>
+        <result property="ud_email" column="ud_email"></result>
+        <result property="ud_college" column="ud_college"></result>
+        <result property="ud_education" column="ud_education"></result>
+        <result property="ud_company_name" column="ud_company_name"></result>
+        <result property="ud_job" column="ud_job"></result>
+        <result property="ud_field" column="ud_field"></result>
+        <result property="ud_jobyear" column="ud_jobyear"></result>
+        <result property="ud_achievement" column="ud_achievement"></result>
+        <result property="ud_exp_field" column="ud_exp_field"></result>
+        <result property="ud_rname" column="ud_rname"></result>
+        <result property="ud_teamname" column="ud_teamname"></result>
+        <result property="sysu_id" column="sysu_id"></result>
+        <result property="ud_status" column="ud_status"></result>
+        <result property="ud_imgurl" column="ud_imgurl"></result>
+        <result property="up_type" column="up_type"></result>
+        <association property="userEntity" column="sysu_id" select="com.learn.dao.SysUserDao.queryObject"></association>
+    </resultMap>
+    <select id="queryObject" resultMap="stf">
+        select *
+        from u_details
+        where ud_id = #{value}
+    </select>
+    <select id="queryList" resultMap="stf">
+        select * from u_details where 1=1
+        <if test="ud_id != null and ud_id != ''">
+            and ud_id = #{ud_id}
+        </if>
+        <if test="ud_rname != null and ud_rname != ''">
+            and ud_rname = #{ud_rname}
+        </if>
+        <if test="ud_sex != null and ud_sex != ''">
+            and ud_sex = #{ud_sex}
+        </if>
+        <if test="ud_phone != null and ud_phone != ''">
+            and ud_phone = #{ud_phone}
+        </if>
+        <if test="ud_email != null and ud_email != ''">
+            and ud_email = #{ud_email}
+        </if>
+        <if test="ud_college != null and ud_college != ''">
+            and ud_college = #{ud_college}
+        </if>
+        <if test="ud_education != null and ud_education != ''">
+            and ud_education = #{ud_education}
+        </if>
+        <if test="ud_company_name != null and ud_company_name != ''">
+            and ud_company_name = #{ud_company_name}
+        </if>
+        <if test="ud_job != null and ud_job != ''">
+            and ud_job = #{ud_job}
+        </if>
+        <if test="ud_field != null and ud_field != ''">
+            and ud_field = #{ud_field}
+        </if>
+        <if test="ud_jobyear != null and ud_jobyear != ''">
+            and ud_jobyear = #{ud_jobyear}
+        </if>
+        <if test="ud_exp_field != null and ud_exp_field != ''">
+            and ud_exp_field = #{ud_exp_field}
+        </if>
+        <if test="ud_achievement != null and ud_achievement != ''">
+            and ud_achievement = #{ud_achievement}
+        </if>
+        <if test="ud_rname != null and ud_rname != ''">
+            and ud_rname = #{ud_rname}
+        </if>
+        <if test="ud_teamname != null and ud_teamname != ''">
+            and ud_teamname = #{ud_teamname}
+        </if>
+        <if test="sysu_id != null and sysu_id != ''">
+            and sysu_id = #{sysu_id}
+        </if>
+        <if test="ud_status != null and ud_status != ''">
+            and ud_status = #{ud_status}
+        </if>
+        <if test="up_type != null and up_type != ''">
+            and up_type=#{up_type}
+        </if>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+            <otherwise>
+                order by ud_id desc
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+
+    <select id="queryTotal" resultType="int">
+        select count(*) from u_details where 1=1
+        <if test="ud_id != null and ud_id != ''">
+            and ud_id = #{ud_id}
+        </if>
+        <if test="ud_rname != null and ud_rname != ''">
+            and ud_rname = #{ud_rname}
+        </if>
+        <if test="ud_sex != null and ud_sex != ''">
+            and ud_sex = #{ud_sex}
+        </if>
+        <if test="ud_phone != null and ud_phone != ''">
+            and ud_phone = #{ud_phone}
+        </if>
+        <if test="ud_email != null and ud_email != ''">
+            and ud_email = #{ud_email}
+        </if>
+        <if test="ud_college != null and ud_college != ''">
+            and ud_college = #{ud_college}
+        </if>
+        <if test="ud_education != null and ud_education != ''">
+            and ud_education = #{ud_education}
+        </if>
+        <if test="ud_company_name != null and ud_company_name != ''">
+            and ud_company_name = #{ud_company_name}
+        </if>
+        <if test="ud_job != null and ud_job != ''">
+            and ud_job = #{ud_job}
+        </if>
+        <if test="ud_field != null and ud_field != ''">
+            and ud_field = #{ud_field}
+        </if>
+        <if test="ud_jobyear != null and ud_jobyear != ''">
+            and ud_jobyear = #{ud_jobyear}
+        </if>
+        <if test="ud_exp_field != null and ud_exp_field != ''">
+            and ud_exp_field = #{ud_exp_field}
+        </if>
+        <if test="ud_achievement != null and ud_achievement != ''">
+            and ud_achievement = #{ud_achievement}
+        </if>
+        <if test="ud_rname != null and ud_rname != ''">
+            and ud_rname = #{ud_rname}
+        </if>
+        <if test="ud_teamname != null and ud_teamname != ''">
+            and ud_teamname = #{ud_teamname}
+        </if>
+        <if test="sysu_id != null and sysu_id != ''">
+            and sysu_id = #{sysu_id}
+        </if>
+        <if test="ud_status != null and ud_status != ''">
+            and ud_status = #{ud_status}
+        </if>
+        <if test="up_type != null and up_type != ''">
+           and up_type=#{up_type}
+        </if>
+    </select>
+
+    <insert id="save" parameterType="com.learn.entity.U_Details" useGeneratedKeys="true" keyProperty="ud_id">
+        insert into u_details
+        (
+        <if test="sysu_id != null and sysu_id != ''">
+            sysu_id
+        </if>
+        <if test="ud_rname != null and ud_rname != ''">
+            , ud_rname
+        </if>
+        <if test="ud_sex != null and ud_sex != ''">
+            , ud_sex
+        </if>
+        <if test="ud_phone != null and ud_phone != ''">
+            , ud_phone
+        </if>
+        <if test="ud_email != null and ud_email != ''">
+            , ud_email
+        </if>
+        <if test="ud_college != null and ud_college != ''">
+            , ud_college
+        </if>
+        <if test="ud_education != null and ud_education != ''">
+            , ud_education
+        </if>
+        <if test="ud_company_name != null and ud_company_name != ''">
+            , ud_company_name
+        </if>
+        <if test="ud_job != null and ud_job != ''">
+            , ud_job
+        </if>
+        <if test="ud_field != null and ud_field != ''">
+            , ud_field
+        </if>
+        <if test="ud_jobyear != null and ud_jobyear != ''">
+            , ud_jobyear
+        </if>
+        <if test="ud_achievement != null and ud_achievement != ''">
+            , ud_achievement
+        </if>
+        <if test="ud_teamname != null and ud_teamname != ''">
+            , ud_teamname
+        </if>
+
+        <if test="ud_imgurl != null and ud_imgurl != ''">
+            , ud_imgurl
+        </if>
+        <if test="ud_status != null and ud_status != ''">
+            , ud_status
+        </if>
+        <if test="up_type != null and up_type != ''">
+            ,up_type
+        </if>
+        )
+        values (
+        <if test="sysu_id != null and sysu_id != ''">
+            #{sysu_id}
+        </if>
+        <if test="ud_rname != null and ud_rname != ''">
+            ,#{ud_rname}
+        </if>
+        <if test="ud_sex != null and ud_sex != ''">
+            ,#{ud_sex}
+        </if>
+        <if test="ud_phone != null and ud_phone != ''">
+            ,#{ud_phone}
+        </if>
+        <if test="ud_email != null and ud_email != ''">
+            ,#{ud_email}
+        </if>
+        <if test="ud_college != null and ud_college != ''">
+            ,#{ud_college}
+        </if>
+        <if test="ud_education != null and ud_education != ''">
+            ,#{ud_education}
+        </if>
+        <if test="ud_company_name != null and ud_company_name != ''">
+            ,#{ud_company_name}
+        </if>
+        <if test="ud_job != null and ud_job != ''">
+            ,#{ ud_job}
+        </if>
+        <if test="ud_field != null and ud_field != ''">
+            ,#{ud_field}
+        </if>
+        <if test="ud_jobyear != null and ud_jobyear != ''">
+            ,#{ud_jobyear}
+        </if>
+        <if test="ud_achievement != null and ud_achievement != ''">
+            ,#{ud_achievement}
+        </if>
+        <if test="ud_teamname != null and ud_teamname != ''">
+            ,#{ud_teamname}
+        </if>
+        <if test="ud_imgurl != null and ud_imgurl != ''">
+            ,#{ud_imgurl}
+        </if>
+        <if test="ud_status != null and ud_status != ''">
+            , #{ud_status}
+        </if>
+        <if test="up_type != null and up_type != ''">
+            ,#{up_type}
+        </if>)
+    </insert>
+    <update id="update" parameterType="com.learn.entity.U_Details">
+        update u_details
+        <set>
+            ud_id = #{ud_id}
+            <if test="ud_rname != null and ud_rname != ''">
+                ,ud_rname=#{ud_rname}
+            </if>
+            <if test="ud_sex != null and ud_sex != ''">
+                ,ud_sex=#{ud_sex}
+            </if>
+            <if test="ud_phone != null and ud_phone != ''">
+                ,ud_phone=#{ud_phone}
+            </if>
+            <if test="ud_email != null and ud_email != ''">
+                ,ud_email=#{ud_email}
+            </if>
+            <if test="ud_college != null and ud_college != ''">
+                ,ud_college=#{ud_college}
+            </if>
+            <if test="ud_education != null and ud_education != ''">
+                ,ud_education=#{ud_education}
+            </if>
+            <if test="ud_company_name != null and ud_company_name != ''">
+                ,ud_company_name=#{ud_company_name}
+            </if>
+            <if test="ud_job != null and ud_job != ''">
+                ,ud_job=#{ud_job}
+            </if>
+            <if test="ud_field != null and ud_field != ''">
+                ,ud_field=#{ud_field}
+            </if>
+            <if test="ud_jobyear != null and ud_jobyear != ''">
+                ,ud_jobyear=#{ud_jobyear}
+            </if>
+            <if test="ud_achievement != null and ud_achievement != ''">
+                ,ud_achievement=#{ud_achievement}
+            </if>
+            <if test="ud_teamname != null and ud_teamname != ''">
+                ,ud_teamname=#{ud_teamname}
+            </if>
+            <if test="ud_status != null and ud_status != ''">
+                ,ud_status=#{ud_status}
+            </if>
+            <if test="ud_imgurl != null and ud_imgurl != ''">
+                ,ud_imgurl=#{ud_imgurl}
+            </if>
+            <if test="up_type != null and up_type != ''">
+                ,up_type=#{up_type}
+            </if>
+        </set>
+        where ud_id = #{ud_id}
+    </update>
+
+    <delete id="delete">
+        delete
+        from u_details
+        where ud_id = #{value}
+    </delete>
+
+    <delete id="deleteBatch">
+        delete from u_details where ud_id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

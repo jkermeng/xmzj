@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>新闻列表</title>
+  #parse("sys/header.html")
+</head>
+
+<body>
+  <div id="rrapp" v-cloak>
+    <div v-show="showList">
+      <div class="grid-btn">
+        <div class="form-group col-sm-2">
+          <input type="text" class="form-control" v-model="search" @keyup.enter="query" placeholder="用户名">
+        </div>
+        <a class="btn btn-default" @click="query">查询</a>
+        #if($shiro.hasPermission("sys:user:save"))
+        <a class="btn btn-primary" @click="add"><i class="fa fa-plus"></i>&nbsp;新增</a>
+        #end
+        #if($shiro.hasPermission("sys:user:update"))
+        <a class="btn btn-primary" @click="update"><i class="fa fa-pencil-square-o"></i>&nbsp;详情</a>
+        #end
+        #if($shiro.hasPermission("sys:user:delete"))
+        <a class="btn btn-primary" @click="del"><i class="fa fa-trash-o"></i>&nbsp;删除</a>
+        #end
+      </div>
+      <table id="jqGrid"></table>
+      <div id="jqGridPager"></div>
+    </div>
+
+    <div v-show="!showList" class="panel panel-success">
+      <div class="panel-heading">{{title}}</div>
+      <form class="form-horizontal">
+        <div class="form-group">
+          <div class="col-sm-2 control-label">活动主题</div>
+          <div class="col-sm-10">
+            <input type="text" :disabled="showInfo" class="form-control" v-model="form.username" placeholder="专家" />
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-sm-2 control-label">活动内容</div>
+          <div class="col-sm-10">
+            <textarea class="form-control" v-model="form.password" placeholder="材料" cols="30" rows="5"></textarea>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-sm-2 control-label">活动方案</div>
+          <div class="col-sm-10">
+            <input type="text" class="form-control" v-model="form.email" placeholder="设备" />
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-sm-2 control-label">参与人员限制</div>
+          <div class="col-sm-10">
+            <input type="text" class="form-control" v-model="form.mobile" placeholder="工程" />
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-sm-2 control-label">参与费用</div>
+          <div class="col-sm-10">
+            <input type="text" class="form-control" v-model="form.mobile" placeholder="工程" />
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-sm-2 control-label">活动时间</div>
+          <div class="col-sm-10">
+            <input type="text" class="form-control" v-model="form.mobile" placeholder="工程" />
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-sm-2 control-label">活动地点</div>
+          <div class="col-sm-10">
+            <input type="text" class="form-control" v-model="form.mobile" placeholder="工程" />
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-sm-2 control-label">所属行业</div>
+          <div class="col-sm-10">
+            <input type="text" class="form-control" v-model="form.mobile" placeholder="工程" />
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-sm-2 control-label">活动宣传图</div>
+          <div class="col-sm-10">
+            <button class="btn btn-success" id="upload">上传</button>
+            <img v-if="form.img" :src="form.img" style="width: 100px;margin-left: 20px;">
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-sm-2 control-label">邀请</div>
+          <div class="col-sm-10">
+            <div class="input-group">
+              <input type="text" class="form-control" aria-label="...">
+              <div class="input-group-btn">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                  aria-haspopup="true" aria-expanded="false">选择邀请对象 <span class="caret"></span></button>
+                <ul class="dropdown-menu dropdown-menu-right">
+                  <li @click='selectobj'>Action</li>
+
+                  <li @click='selectobj'>Another action</li>
+                  <li><a href="#">Something else here</a></li>
+                  <li role="separator" class="divider"></li>
+                  <li><a href="#">Separated link</a></li>
+                </ul>
+              </div><!-- /btn-group -->
+            </div><!-- /input-group -->
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-sm-2 control-label"></div>
+          <input type="button" v-if='!showInfo' class="btn btn-primary" @click="saveOrUpdate" value="确定" />
+          &nbsp;&nbsp;<input type="button" class="btn btn-default" @click="reload" value="返回" />
+        </div>
+      </form>
+    </div>
+
+
+  </div>
+  </div>
+
+  <script src="${rc.contextPath}/js/admin/mynews.js?_${date.systemTime}"></script>
+</body>
+
+</html>

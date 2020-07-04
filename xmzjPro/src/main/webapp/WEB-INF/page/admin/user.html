@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>管理员列表</title>
+	#parse("sys/header.html")
+</head>
+
+<body>
+	<div id="rrapp" v-cloak>
+		<div v-show="showList">
+			<div class="grid-btn">
+				<div class="form-group col-sm-2">
+					<input type="text" class="form-control" v-model="q.username" @keyup.enter="query" placeholder="用户名">
+				</div>
+				<a class="btn btn-default" @click="query">查询</a>
+				#if($shiro.hasPermission("sys:user:save"))
+				<a class="btn btn-primary" @click="add"><i class="fa fa-plus"></i>&nbsp;新增</a>
+				#end
+				#if($shiro.hasPermission("sys:user:update"))
+				<a class="btn btn-primary" @click="update"><i class="fa fa-pencil-square-o"></i>&nbsp;修改</a>
+				#end
+				#if($shiro.hasPermission("sys:user:delete"))
+				<a class="btn btn-primary" @click="del"><i class="fa fa-trash-o"></i>&nbsp;删除</a>
+				#end
+				<a class="btn btn-primary" @click="info"><i class="fa fa-info"></i>&nbsp;详情</a>
+				<a class="btn btn-primary" @click="role"><i class="fa fa-info"></i>&nbsp;权限</a>
+			</div>
+			<table id="jqGrid"></table>
+			<div id="jqGridPager"></div>
+		</div>
+
+		<div v-show="!showList" class="panel panel-success">
+			<div class="panel-heading">{{title}}</div>
+			<form class="form-horizontal">
+				<div class="form-group">
+					<div class="col-sm-2 control-label">用户</div>
+					<div class="col-sm-10">
+						<input type="text" :disabled="showInfo" class="form-control" v-model="user.username" placeholder="用户名" />
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-2 control-label">邮箱</div>
+					<div class="col-sm-10">
+						<input type="text" :disabled="showInfo" class="form-control" v-model="user.email" placeholder="邮箱" />
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-2 control-label">电话</div>
+					<div class="col-sm-10">
+						<input type="text" :disabled="showInfo" class="form-control" v-model="user.mobile" placeholder="电话" />
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-2 control-label">性别</div>
+					<div class="col-sm-10">
+						<select name="" id="" :disabled="showInfo" class="form-control" v-model="user.sex">
+							<option value="男">男</option>
+							<option value="女">女</option>
+						</select>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-2 control-label">个人介绍</div>
+					<div class="col-sm-10">
+						<textarea class="form-control" :disabled="showInfo" v-model="user.content"></textarea>
+					</div>
+				</div>
+				<!-- <div class="form-group">
+					<div class="col-sm-2 control-label">头像</div>
+					<div class="col-sm-10">
+						<img width="45" height="45" :src="user.img" />
+					</div>
+				</div> -->
+				<div class="form-group">
+					<div class="col-sm-2 control-label">状态</div>
+					<label class="radio-inline">
+						<input type="radio" name="status" :disabled="showInfo" value="0" v-model="user.status" /> 禁用
+					</label>
+					<label class="radio-inline">
+						<input type="radio" name="status" :disabled="showInfo" value="1" v-model="user.status" /> 正常
+					</label>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-2 control-label"></div>
+					<input type="button" class="btn btn-primary" v-if='!showInfo' @click="saveOrUpdate" value="确定" />
+					&nbsp;&nbsp;<input type="button" class="btn btn-default" @click="reload" value="返回" />
+				</div>
+
+			</form>
+		</div>
+		<!-- 完整信息 -->
+		<div id="userinfoLayer" style="display: none;">
+			<form class="form-horizontal">
+				<div class="form-group">
+					<div class="form-group">
+						<div class="col-sm-2 control-label">用户</div>
+						<span class="label label-success" style="vertical-align: bottom;">{{user.username}}</span>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-2 control-label">真实姓名</div>
+						<div class="col-sm-10">
+							<input type="text" class="form-control" :disabled="showInfo" v-model="userInfo.ud_rname"
+								placeholder="真实姓名" />
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-2 control-label">邮箱</div>
+						<div class="col-sm-10">
+							<input type="text" class="form-control" :disabled="showInfo" v-model="userInfo.ud_email"
+								placeholder="邮箱" />
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-2 control-label">电话</div>
+						<div class="col-sm-10">
+							<input type="text" class="form-control" :disabled="showInfo" v-model="userInfo.ud_phone"
+								placeholder="电话" />
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-2 control-label">性别</div>
+						<div class="col-sm-10">
+							<input type="text" class="form-control" :disabled="showInfo" v-model="userInfo.ud_sex" placeholder="性别" />
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-2 control-label">职务</div>
+						<div class="col-sm-10">
+							<input type="text" class="form-control" :disabled="showInfo" v-model="userInfo.ud_job" placeholder="职务" />
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-2 control-label">专业领域</div>
+						<div class="col-sm-10">
+							<input type="text" class="form-control" :disabled="showInfo" v-model="userInfo.ud_exp_field"
+								placeholder="专业领域" />
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-2 control-label">学历</div>
+						<div class="col-sm-10">
+							<input type="text" class="form-control" :disabled="showInfo" v-model="userInfo.ud_college"
+								placeholder="学历" />
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-2 control-label">毕业院校</div>
+						<div class="col-sm-10">
+							<input type="text" class="form-control" :disabled="showInfo" v-model="userInfo.ud_education"
+								placeholder="毕业院校" />
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-2 control-label">单位名称</div>
+						<div class="col-sm-10">
+							<input type="text" class="form-control" :disabled="showInfo" v-model="userInfo.ud_company_name"
+								placeholder="单位名称" />
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-2 control-label">从事的技术领域</div>
+						<div class="col-sm-10">
+							<input type="text" class="form-control" :disabled="showInfo" v-model="userInfo.ud_field"
+								placeholder="从事的技术领域" />
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-2 control-label">从业年限</div>
+						<div class="col-sm-10">
+							<input type="text" class="form-control" :disabled="showInfo" v-model="userInfo.ud_jobyear"
+								placeholder="从业年限" />
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-2 control-label">主要成就</div>
+						<div class="col-sm-10">
+							<input type="text" class="form-control" :disabled="showInfo" v-model="userInfo.ud_achievement"
+								placeholder="主要成就" />
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-2 control-label">团队名</div>
+						<div class="col-sm-10">
+							<input type="text" class="form-control" :disabled="showInfo" v-model="userInfo.ud_teamname"
+								placeholder="团队名" />
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-2 control-label">图片</div>
+						<div class="col-sm-10">
+							<input v-if='showInfo' type="file" id="upload">
+							<img :src="userInfo.ud_imgurl?userInfo.ud_imgurl:''" width="45" height="45">
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-2 control-label">账号类型</div>
+						<div class="col-sm-10">
+							<label class="radio-inline">
+								<input type="radio" name="status" :disabled="showInfo" value="3" v-model="userInfo.up_type" />
+								个人
+							</label>
+							<label class="radio-inline">
+								<input type="radio" name="status" :disabled="showInfo" value="4" v-model="userInfo.up_type" />
+								企业
+							</label>
+							<label class="radio-inline">
+								<input type="radio" name="status" :disabled="showInfo" value="1" v-model="userInfo.up_type" />
+								专家
+							</label>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-2 control-label">审核状态</div>
+						<div class="col-sm-10">
+							<label class="radio-inline">
+								<input type="radio" name="status" value="1" v-model="userInfo.ud_status" /> 审核中
+							</label>
+							<label class="radio-inline">
+								<input type="radio" name="status" value="2" v-model="userInfo.ud_status" /> 通过
+							</label>
+							<label class="radio-inline">
+								<input type="radio" name="status" value="3" v-model="userInfo.ud_status" /> 不通过
+							</label>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+		<!-- 修改权限 -->
+		<div id="roleLayer" style="display: none;">
+			<form class="form-horizontal">
+				<div class="form-group">
+					<div class="col-sm-2 control-label">权限</div>
+					<div class="col-sm-10">
+						<select class="form-control" v-model="roleId">
+							<option v-for="l in roleList" :value="l.roleId">{{l.roleName}}</option>
+						</select>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+	<script src="${rc.contextPath}/js/admin/user.js?_${date.systemTime}"></script>
+</body>
+
+</html>

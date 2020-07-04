@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>项目</title>
+    #parse("sys/header.html")
+</head>
+<body>
+<div id="rrapp" v-cloak>
+
+
+    <div v-show="!showList" class="panel panel-success">
+        <div class="panel-heading">{{title}}</div>
+        <form class="form-horizontal">
+            <div class="form-group">
+                <div class="col-sm-2 control-label">项目名称</div>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" :disabled="showInfo" v-model="project.name"
+                           placeholder="名称"/>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-2 control-label">领域</div>
+                <div class="col-sm-10">
+                    <select class="form-control" :disabled="showInfo" v-model="project.type">
+                        <option v-for="l in types" :value="l.id">{{l.name}}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-2 control-label">内容</div>
+                <div class="col-sm-10">
+                    <textarea class="form-control" :disabled="showInfo" v-model="project.content" placeholder="内容"
+                              cols="30" rows="5"></textarea>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-2 control-label">地点</div>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" :disabled="showInfo" v-model="project.area"
+                           placeholder="地点"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-2 control-label">时间</div>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" :disabled="showInfo" v-model="project.time"
+
+                           onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD hh:mm:ss', choose: function(date){vm.project.time=date;}})"
+                           placeholder="时间"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-2 control-label">所选专家</div>
+                <div class="col-sm-10">
+                    <select class="form-control" :disabled="showInfo" v-model="pro">
+                        <option v-for="l in pros" :value="l">{{l.username}}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-2 control-label">费用</div>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" disabled v-model="project.price"
+                           placeholder="费用（选择专家后自动计算）"/>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-2 control-label"></div>
+                <input type="button" class="btn btn-primary" @click="saveOrUpdate('支付宝支付')" value="支付宝支付" v-if="!showInfo"/>
+                <input type="button" class="btn btn-success" @click="saveOrUpdate('微信支付')" value="微信支付" v-if="!showInfo"/>
+                <input type="button" class="btn btn-default" @click="saveOrUpdate('银行卡支付')" value="银行卡支付" v-if="!showInfo"/>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="${rc.contextPath}/js/admin/add.js?_${date.systemTime}"></script>
+</body>
+</html>

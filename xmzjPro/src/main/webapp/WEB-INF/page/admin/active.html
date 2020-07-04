@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>活动列表</title>
+    #parse("sys/header.html")
+</head>
+
+<body>
+    <div id="rrapp" v-cloak>
+        <div v-show="showList">
+            <div class="grid-btn">
+                <div class="form-group col-sm-2">
+                    <input type="text" class="form-control" v-model="search" @keyup.enter="query" placeholder="关键词">
+                </div>
+                <a class="btn btn-default" @click="query">查询</a>
+                <a class="btn btn-primary" @click="add"><i class="fa fa-plus"></i>&nbsp;新增</a>
+                #if($shiro.hasPermission("sys:user:update"))
+                <a class="btn btn-primary" @click="update"><i class="fa fa-info"></i>&nbsp;审核</a>
+                #end
+                #if($shiro.hasPermission("sys:user:delete"))
+                <a class="btn btn-primary" @click="del"><i class="fa fa-trash-o"></i>&nbsp;删除</a>
+                #end
+            </div>
+            <table id="jqGrid"></table>
+            <div id="jqGridPager"></div>
+        </div>
+
+        <div v-show="!showList" class="panel panel-success">
+            <div class="panel-heading">{{title}}</div>
+            <form class="form-horizontal">
+                <div class="form-group">
+                    <div class="col-sm-2 control-label">活动主题</div>
+                    <div class="col-sm-10">
+                        <input type="text" :disabled="showInfo || form.a_status === 1" class="form-control"
+                            v-model="form.a_title" placeholder="活动主题" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-2 control-label">活动内容</div>
+                    <div class="col-sm-10">
+                        <textarea class="form-control" :disabled="showInfo || form.a_status === 1"
+                            v-model="form.a_context" placeholder="活动内容" cols="30" rows="5"></textarea>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-2 control-label">活动方案</div>
+                    <div class="col-sm-10">
+                        <input type="text" :disabled="showInfo || form.a_status === 1" class="form-control"
+                            v-model="form.a_scheme" placeholder="活动方案" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-2 control-label">参与人员限制</div>
+                    <div class="col-sm-10">
+                        <input type="text" :disabled="showInfo || form.a_status === 1" class="form-control"
+                            v-model="form.a_pnum" placeholder="参与人员限制" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-2 control-label">参与费用</div>
+                    <div class="col-sm-10">
+                        <input type="text" :disabled="showInfo || form.a_status === 1" class="form-control"
+                            v-model="form.a_price" placeholder="参与费用" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-2 control-label">活动时间</div>
+                    <div class="col-sm-10">
+                        <input type="text" :disabled="showInfo || form.a_status === 1" class="form-control"
+                            v-model="form.a_beginDate" placeholder="活动时间" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-2 control-label">活动宣传图</div>
+                    <div class="col-sm-10">
+                        <img :src="form.a_imgList?form.a_imgList[0].ai_url:''" width="45" height="45">
+                        <input type="file" id="upload">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-2 control-label">所属行业</div>
+                    <div class="col-sm-10">
+                        <input type="text" :disabled="showInfo || form.a_status === 1" class="form-control"
+                            v-model="form.a_type" placeholder="所属行业" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-2 control-label">活动状态</div>
+                    <div class="col-sm-10">
+                        <label class="radio-inline">
+                            <input type="radio" name="status" value="1" v-model="form.a_status" /> 评审中
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" name="status" value="2" v-model="form.a_status" /> 通过
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" name="status" value="3" v-model="form.a_status" /> 不通过
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-2 control-label"></div>
+                    <input type="button" v-if='!showInfo' class="btn btn-primary" @click="saveOrUpdate" value="确定" />
+                    &nbsp;&nbsp;<input type="button" class="btn btn-default" @click="reload" value="返回" />
+                </div>
+            </form>
+        </div>
+
+
+    </div>
+    </div>
+
+    <script src="${rc.contextPath}/js/admin/active.js?_${date.systemTime}"></script>
+</body>
+
+</html>
