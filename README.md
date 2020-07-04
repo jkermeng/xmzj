@@ -11,6 +11,6 @@
 >
 >统一的异常处理
 
-##图片展示
+## 图片展示
 
-![图3 (https://github.com/jkermeng/xmzj/blob/master/projectImgs/login.png?raw=true)]
+![https://github.com/jkermeng/xmzj/blob/master/projectImgs/login.png?raw=true]
